@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>竟航的深度学习笔记</title>
+  
+  <subtitle>深度学习工程实践 · 从改模型到攻数据</subtitle>
+  <link href="https://2239168985-sudo.github.io/atom.xml" rel="self"/>
+  
+  <link href="https://2239168985-sudo.github.io/"/>
+  <updated>2026-07-21T01:00:00.000Z</updated>
+  <id>https://2239168985-sudo.github.io/</id>
+  
+  <author>
+    <name>熊竟航</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>展望：从改模型到攻数据——下一步与可复现性</title>
+    <link href="https://2239168985-sudo.github.io/posts/f6d9f2dc/"/>
+    <id>https://2239168985-sudo.github.io/posts/f6d9f2dc/</id>
+    <published>2026-07-21T01:00:00.000Z</published>
+    <updated>2026-07-21T01:00:00.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>系列最后一篇，盘点两周的文档产出，并给出经过真实口径验证后的行动路线。</p><h2 id="两周文档与产出"><a href="#两周文档与产出" class="headerlink" title="两周文档与产出"></a>两周文档与产出</h2><ul><li>周志 2&#x2F;4：《周志_第1周_0707-0712》《周志_第2周_0713-0719》</li><li>日志 4&#x2F;8：《日志_第1&#x2F;2&#x2F;3篇_0707-0712》《日志_第4篇_0719-0720》</li><li>汇报 PPT、老师汇报文字版《老师汇报_实验进展总结》</li><li>交接文档、GitHub 发布三件套</li><li>权威精度源《实验精度汇总.md》——所有精度数字以此为准</li></ul><h2 id="下一步（按优先级排序）"><a href="#下一步（按优先级排序）" class="headerlink" title="下一步（按优先级排序）"></a>下一步（按优先级排序）</h2><h3 id="1-拿真实新增图像（最高优先级）"><a href="#1-拿真实新增图像（最高优先级）" class="headerlink" title="1. 拿真实新增图像（最高优先级）"></a>1. 拿真实新增图像（最高优先级）</h3><p>第三篇已经论证：瓶颈是<strong>场景多样性</strong>。两条路：</p><ul><li><strong>实地补拍</strong>：针对真实河道 &#x2F; 湖泊场景补充拍摄；</li><li><strong>引入公开数据集</strong>：IWHR_AI_Lable_Floater_V1（Scientific Data 2025，3000 张内陆水域漂浮物图像），做合并训练或域适应。</li></ul><h3 id="2-标注草稿人工过一遍"><a href="#2-标注草稿人工过一遍" class="headerlink" title="2. 标注草稿人工过一遍"></a>2. 标注草稿人工过一遍</h3><p>审计产出的清标注草稿（见第四篇）逐张人工确认后转正。</p><h3 id="3-主攻-grass-类"><a href="#3-主攻-grass-类" class="headerlink" title="3. 主攻 grass 类"></a>3. 主攻 grass 类</h3><p>真实口径下 grass mAP50 ≈ 0.49 是全局瓶颈。策略组合：新场景数据 + 多背景 copy_paste + 语义判别层面的针对性设计。</p><h3 id="4-成果发布"><a href="#4-成果发布" class="headerlink" title="4. 成果发布"></a>4. 成果发布</h3><ul><li>GitHub 仓库公开（SSH 走 22 端口方案已验证可写，待公钥绑定账号）；</li><li>CSDN 博客同步发布（待登录态）。</li></ul><h2 id="可复现性（附录）"><a href="#可复现性（附录）" class="headerlink" title="可复现性（附录）"></a>可复现性（附录）</h2><p>为方便他人（和未来的自己）复现，环境与口径约定如下：</p><table><thead><tr><th>项</th><th>内容</th></tr></thead><tbody><tr><td>训练入口</td><td>项目根目录下各 <code>train_xxx.py</code> 脚本，conda 环境内直接 <code>python train_xxx.py</code></td></tr><tr><td>混合精度</td><td>自定义模块实验统一 <code>amp=False</code>（避免数值不稳定）</td></tr><tr><td>环境</td><td>ultralytics 8.4.90（源码）&#x2F; PyTorch 2.6.0+cu124 &#x2F; Python 3.13 &#x2F; RTX 4060 8GB</td></tr><tr><td>评测口径</td><td>统一用官方 test 1200 图评测；严格区分「旧泄漏口径」与「真实口径」</td></tr><tr><td>数据划分</td><td>官方 train 600 &#x2F; val 600 &#x2F; test 1200，seed&#x3D;42</td></tr></tbody></table><p>完整实验台账见仓库内《实验精度汇总.md》。</p><h2 id="系列回顾"><a href="#系列回顾" class="headerlink" title="系列回顾"></a>系列回顾</h2><table><thead><tr><th>篇</th><th>一句话</th></tr></thead><tbody><tr><td>1 开篇</td><td>回应「跑不过基线」的质疑，先问基线是不是真的</td></tr><tr><td>2 实验体系</td><td>27 组对比，三条路线的完整台账</td></tr><tr><td>3 关键发现</td><td>划分泄漏是根因；数据量是唯一被验证的杠杆</td></tr><tr><td>4 工程实战</td><td>SSM 向量化 5×、审计流水线、杀进程大坑</td></tr><tr><td>5 展望（本篇）</td><td>从改模型转向攻数据，主攻场景多样性与 grass 类</td></tr></tbody></table><p>如果只用一句话带走这个项目：<strong>先把评测口径搞对，然后把钱花在数据上。</strong></p>]]></content>
+    
+    
+    <summary type="html">项目阶段性收尾与展望：两周文档产出清单；下一步四件事——拿真实新增图像、清标注草稿转正、主攻 grass 类、成果发布；以及完整的可复现环境说明。</summary>
+    
+    
+    
+    <category term="深度学习工程实践" scheme="https://2239168985-sudo.github.io/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/"/>
+    
+    
+    <category term="YOLOv8" scheme="https://2239168985-sudo.github.io/tags/YOLOv8/"/>
+    
+    <category term="目标检测" scheme="https://2239168985-sudo.github.io/tags/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/"/>
+    
+    <category term="数据集" scheme="https://2239168985-sudo.github.io/tags/%E6%95%B0%E6%8D%AE%E9%9B%86/"/>
+    
+    <category term="可复现性" scheme="https://2239168985-sudo.github.io/tags/%E5%8F%AF%E5%A4%8D%E7%8E%B0%E6%80%A7/"/>
+    
+    <category term="项目规划" scheme="https://2239168985-sudo.github.io/tags/%E9%A1%B9%E7%9B%AE%E8%A7%84%E5%88%92/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>工程实战：SSM 向量化 5×、标注审计、Git Bash 杀进程大坑</title>
+    <link href="https://2239168985-sudo.github.io/posts/413f3082/"/>
+    <id>https://2239168985-sudo.github.io/posts/413f3082/</id>
+    <published>2026-07-19T01:00:00.000Z</published>
+    <updated>2026-07-19T01:00:00.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>这一篇不讲模型精度，讲让实验能跑下去、跑得快的工程功夫。四件事：一次 5 倍的 GPU 提速、一套标注审计流水线、一次离线扩量、一个 Windows 下杀进程的大坑。</p><h2 id="1-SSM-向量化：Mamba-主干提速-5-倍"><a href="#1-SSM-向量化：Mamba-主干提速-5-倍" class="headerlink" title="1. SSM 向量化：Mamba 主干提速 5 倍"></a>1. SSM 向量化：Mamba 主干提速 5 倍</h2><p>B25 实验用的 ODMamba 主干，其状态空间模型（SSM）最初用 Python <code>for</code> 循环逐 token 递推：</p><ul><li>GPU 利用率只有 **41%**，训练速度约 <strong>0.4 it&#x2F;s</strong>；</li><li>100 个 epoch 预计要 <strong>~17.6 小时</strong>。</li></ul><p>递推式 <code>h[t] = a[t] * h[t-1] + b[t]</code> 本质是<strong>一阶线性递推</strong>，可以改写成 GPU 并行的前缀扫描（Hillis-Steele inclusive scan）。关键思路示意：</p><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> torch<span class="token keyword">def</span> <span class="token function">ssm_sequential</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token punctuation">)</span><span class="token punctuation">:</span>    <span class="token triple-quoted-string string">"""原始实现：逐 token 递推，O(L) 串行。"""</span>    h <span class="token operator">=</span> torch<span class="token punctuation">.</span>zeros_like<span class="token punctuation">(</span>b<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>    outs <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>    <span class="token keyword">for</span> t <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">:</span>        h <span class="token operator">=</span> a<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> t<span class="token punctuation">]</span> <span class="token operator">*</span> h <span class="token operator">+</span> b<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> t<span class="token punctuation">]</span>        outs<span class="token punctuation">.</span>append<span class="token punctuation">(</span>h<span class="token punctuation">)</span>    <span class="token keyword">return</span> torch<span class="token punctuation">.</span>stack<span class="token punctuation">(</span>outs<span class="token punctuation">,</span> dim<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token keyword">def</span> <span class="token function">ssm_parallel_scan</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token punctuation">)</span><span class="token punctuation">:</span>    <span class="token triple-quoted-string string">"""并行实现：Hillis-Steele inclusive scan。    先对 (a, b) 做对数域累积，把递推变成可并行的前缀操作。"""</span>    L <span class="token operator">=</span> a<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>    A <span class="token operator">=</span> torch<span class="token punctuation">.</span>cumsum<span class="token punctuation">(</span>torch<span class="token punctuation">.</span>log<span class="token punctuation">(</span>a<span class="token punctuation">.</span>clamp_min<span class="token punctuation">(</span><span class="token number">1e-20</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> dim<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>   <span class="token comment"># log 累乘</span>    <span class="token comment"># b'[t] = b[t] / a 前缀积，再乘回来；等价于对 (b/a_cum) 做加权和</span>    B <span class="token operator">=</span> b <span class="token operator">/</span> torch<span class="token punctuation">.</span>exp<span class="token punctuation">(</span>A<span class="token punctuation">)</span>    out <span class="token operator">=</span> torch<span class="token punctuation">.</span>exp<span class="token punctuation">(</span>A<span class="token punctuation">)</span> <span class="token operator">*</span> torch<span class="token punctuation">.</span>cumsum<span class="token punctuation">(</span>B<span class="token punctuation">,</span> dim<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>    <span class="token keyword">return</span> out<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><blockquote><p>以上为思路示意重写版，实际实现按张量形状做了批量化处理；核心思想一致：把串行递推变成 GPU 上的 <code>cumsum</code> &#x2F; 前缀扫描原语。</p></blockquote><p>改造效果：</p><table><thead><tr><th>指标</th><th>改造前</th><th>改造后</th></tr></thead><tbody><tr><td>训练速度</td><td>~0.4 it&#x2F;s（GPU 41%）</td><td><strong>~2.0 it&#x2F;s</strong></td></tr><tr><td>100 epoch 耗时</td><td>~17.6 h</td><td><strong>~3.3 h（约 5×）</strong></td></tr><tr><td>数值等价性</td><td>—</td><td>max diff <strong>1.9e-6</strong></td></tr></tbody></table><h2 id="2-标注质量审计流水线"><a href="#2-标注质量审计流水线" class="headerlink" title="2. 标注质量审计流水线"></a>2. 标注质量审计流水线</h2><p>用当前最佳模型推理全量 2400 张图，自动筛出可疑标注，脚本为 <code>audit_labels.py</code> + <code>apply_audit_fixes.py</code>：</p><ul><li>筛出：<strong>漏标 33 处 &#x2F; 错标 1 处 &#x2F; 低召回图片 20 张</strong>；</li><li>修正只写入新目录 <code>labels_audited</code>，<strong>原始 labels 一字未动</strong>（可回滚）；</li><li>最终仅 4 处修正生效（总框数 3461 → 3464）。</li></ul><p>结论同样重要：<strong>清漏标不是精度杠杆</strong>——也呼应了上一篇「瓶颈是场景多样性」的判断。</p><h2 id="3-copy-paste-离线扩量"><a href="#3-copy-paste-离线扩量" class="headerlink" title="3. copy_paste 离线扩量"></a>3. copy_paste 离线扩量</h2><p><code>make_copy_paste.py</code> 把实例级 copy_paste 从在线增强改为离线落盘，便于审计与复用：</p><table><thead><tr><th>指标</th><th>扩量前</th><th>扩量后</th></tr></thead><tbody><tr><td>训练图</td><td>1200</td><td>1900</td></tr><tr><td>GT 框</td><td>1740</td><td>4164</td></tr><tr><td>grass 实例</td><td>106</td><td>640</td></tr></tbody></table><p>（扩量后的真实口径精度见第三篇：仅微升 0.0026，旧图翻新信息增量有限。）</p><h2 id="4-训练监督器-看门狗"><a href="#4-训练监督器-看门狗" class="headerlink" title="4. 训练监督器 + 看门狗"></a>4. 训练监督器 + 看门狗</h2><p>B21–B27 七组实验串行跑，靠两个脚本守住：</p><ul><li><code>run_round2.py</code>：实验监督器，串行调度、异常记录；</li><li><code>watchdog_round2.py</code>：每 2 小时巡检一次进度并推送通知（完成后已及时清理该重复通知自动化）。</li></ul><h2 id="5-大坑：Git-Bash-下-pkill-对-nohup-训练进程完全无效"><a href="#5-大坑：Git-Bash-下-pkill-对-nohup-训练进程完全无效" class="headerlink" title="5. 大坑：Git Bash 下 pkill 对 nohup 训练进程完全无效"></a>5. 大坑：Git Bash 下 pkill 对 nohup 训练进程完全无效</h2><p>Windows + Git Bash 混合环境里，<code>nohup</code> 启动的训练进程本质是 <strong>Windows 原生进程</strong>，Git Bash 的 <code>pkill</code> &#x2F; <code>kill</code> 按 MSYS 虚拟 PID 去找，<strong>根本匹配不到、也杀不掉</strong>，表现为命令「执行成功」但训练还在跑。</p><p>正确解法：用 PowerShell 按命令行特征匹配 Windows 原生 PID，再结束进程：</p><pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 按命令行关键字找到训练进程并结束</span><span class="token function">Get-CimInstance</span> Win32_Process <span class="token punctuation">|</span>  <span class="token function">Where-Object</span> <span class="token punctuation">&#123;</span> <span class="token variable">$_</span><span class="token punctuation">.</span>CommandLine <span class="token operator">-match</span> <span class="token string">'train_xxx.py'</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">|</span>  <span class="token function">ForEach-Object</span> <span class="token punctuation">&#123;</span> <span class="token function">Stop-Process</span> <span class="token operator">-</span>Id <span class="token variable">$_</span><span class="token punctuation">.</span>ProcessId <span class="token operator">-</span>Force <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre><p>踩坑要点：</p><ol><li><code>pkill -f</code> 在 Git Bash 里只能杀 MSYS 环境自己起的进程；</li><li><code>nohup python train_xxx.py &amp;</code> 启动的是原生 <code>python.exe</code>，要用 <code>Win32_Process</code> 的 <code>CommandLine</code> 字段匹配；</li><li>杀之前先 <code>Select-Object ProcessId, CommandLine</code> 打印确认，别误杀别的 Python 进程。</li></ol><h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>工程沉淀的共同主题：<strong>可复现、可回滚、可守护</strong>。审计不动原始数据、扩量离线落盘、长训有看门狗、杀进程走原生 API——这些习惯比任何单点技巧都值钱。</p>]]></content>
+    
+    
+    <summary type="html">数据侧工程沉淀：ODMamba 的 SSM 从 Python for 循环改为 GPU 并行前缀扫描提速 5 倍；标注质量审计流水线；copy_paste 离线扩量；训练监督器与看门狗；以及 Git Bash 下 pkill 对 nohup 进程完全无效的大坑与 PowerShell 解法。</summary>
+    
+    
+    
+    <category term="深度学习工程实践" scheme="https://2239168985-sudo.github.io/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/"/>
+    
+    
+    <category term="Mamba" scheme="https://2239168985-sudo.github.io/tags/Mamba/"/>
+    
+    <category term="PyTorch" scheme="https://2239168985-sudo.github.io/tags/PyTorch/"/>
+    
+    <category term="CUDA" scheme="https://2239168985-sudo.github.io/tags/CUDA/"/>
+    
+    <category term="数据工程" scheme="https://2239168985-sudo.github.io/tags/%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B/"/>
+    
+    <category term="工程避坑" scheme="https://2239168985-sudo.github.io/tags/%E5%B7%A5%E7%A8%8B%E9%81%BF%E5%9D%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>关键发现：划分泄漏、真实基线、数据量才是唯一杠杆</title>
+    <link href="https://2239168985-sudo.github.io/posts/c2020639/"/>
+    <id>https://2239168985-sudo.github.io/posts/c2020639/</id>
+    <published>2026-07-15T01:00:00.000Z</published>
+    <updated>2026-07-15T01:00:00.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>这一篇是整个项目到目前为止最有价值的产出。27 组实验跑完、口径校正之后，我们得到了 6 条经得起检验的结论。其中第 1 条是根因级的——它直接宣告了此前一批「改进有效」结论作废。</p><h2 id="发现-1：划分泄漏（根因级）"><a href="#发现-1：划分泄漏（根因级）" class="headerlink" title="发现 1：划分泄漏（根因级）"></a>发现 1：划分泄漏（根因级）</h2><p>原划分脚本 <code>text.py</code> 使用 <code>random.shuffle</code> 且<strong>没有固定 seed</strong> 做随机划分，结果把约 <strong>960 张 test 集图片混进了训练集</strong>。模型在「见过」的图片上评测，mAP50 自然虚高——旧基线 <strong>0.751</strong> 就是这么来的。</p><p>改用官方划分（train 600 &#x2F; val 600 &#x2F; test 1200，seed&#x3D;42）后，真实基线只有：</p><blockquote><p><strong>真实基线 mAP50 &#x3D; 0.576（600 张训练图）</strong></p></blockquote><p>教训很朴素：<strong>在做任何「改进」之前，先审计你的数据划分。</strong> 评测口径不对，后面所有实验设计、对比表格、结论汇报都是沙上之塔。</p><h2 id="发现-2：数据量才是唯一被验证有效的杠杆"><a href="#发现-2：数据量才是唯一被验证有效的杠杆" class="headerlink" title="发现 2：数据量才是唯一被验证有效的杠杆"></a>发现 2：数据量才是唯一被验证有效的杠杆</h2><p>在真实口径下，把训练图从 600 张扩到 1200 张（纯加数据、不改模型）：</p><table><thead><tr><th>训练图数量</th><th>真实口径 mAP50</th></tr></thead><tbody><tr><td>600</td><td>0.582</td></tr><tr><td>1200</td><td><strong>0.707</strong>（+12.5 点）</td></tr></tbody></table><p>+12.5 个点的提升，不依赖任何结构改动，全部来自数据本身。这是两周实验中<strong>唯一被真实口径验证有效的杠杆</strong>。</p><h2 id="发现-3：结构魔改在真实数据上全部失败"><a href="#发现-3：结构魔改在真实数据上全部失败" class="headerlink" title="发现 3：结构魔改在真实数据上全部失败"></a>发现 3：结构魔改在真实数据上全部失败</h2><p>把 B21–B23 等代表性改进放到真实划分上重验，结果是：</p><table><thead><tr><th>方案</th><th>真实口径 mAP50</th></tr></thead><tbody><tr><td>B21 RFAConv</td><td>0.6548</td></tr><tr><td>B22 BiFormer</td><td>0.6596</td></tr><tr><td>B23 ShuffleAttn</td><td>0.6516</td></tr><tr><td>200 epoch 加长训练</td><td>0.6906</td></tr><tr><td>类别加权</td><td>0.7067</td></tr><tr><td>copy_paste</td><td>0.6932</td></tr><tr><td><strong>标准 baseline（1200 图）</strong></td><td><strong>0.707</strong></td></tr></tbody></table><p><strong>无一超过标准 baseline 的 0.707。</strong> 此前「B21–B27 优于基线」的结论（基于泄漏口径）不可信，正式作废。</p><h2 id="发现-4：瓶颈-数据场景多样性，而不是实例数量或类别均衡"><a href="#发现-4：瓶颈-数据场景多样性，而不是实例数量或类别均衡" class="headerlink" title="发现 4：瓶颈 &#x3D; 数据场景多样性，而不是实例数量或类别均衡"></a>发现 4：瓶颈 &#x3D; 数据场景多样性，而不是实例数量或类别均衡</h2><p>copy_paste 增强把实例贴到旧图上，grass 类占比从 6.1% 提升到 15.4%，但 mAP50 只微升 0.0026，未能突破基线。</p><p>这说明模型缺的不是「更多实例」或「更均衡的类别分布」，而是<strong>真实的新场景 &#x2F; 新背景</strong>。在旧图上翻新，信息增量趋近于零。</p><h2 id="发现-5：grass（杂草）是全局瓶颈"><a href="#发现-5：grass（杂草）是全局瓶颈" class="headerlink" title="发现 5：grass（杂草）是全局瓶颈"></a>发现 5：grass（杂草）是全局瓶颈</h2><p>真实数据上 grass 类 mAP50 ≈ 0.49，远低于其他类别。难点在<strong>语义混淆</strong>（与水面、水生植物外观相近），而不是目标尺寸。已尝试的清漏标、类别加权、旧图 copy_paste 都未能改善这一类。</p><h2 id="发现-6：「黄金组合」无效"><a href="#发现-6：「黄金组合」无效" class="headerlink" title="发现 6：「黄金组合」无效"></a>发现 6：「黄金组合」无效</h2><p>把旋转 + copy_paste + Mixup + 类别加权全部叠上，在两种数据量下都贴住基线：</p><table><thead><tr><th>数据量</th><th>黄金组合</th><th>baseline</th></tr></thead><tbody><tr><td>600 图</td><td>0.582</td><td>0.579</td></tr><tr><td>1200 图</td><td>0.707</td><td>0.706</td></tr></tbody></table><p>彻底印证：<strong>在真实口径下，魔改类方案没有带来任何增益。</strong></p><h2 id="一句话总结"><a href="#一句话总结" class="headerlink" title="一句话总结"></a>一句话总结</h2><blockquote><p>口径先行；数据量是唯一被验证的杠杆；下一步要攻的是<strong>真实新增图像的场景多样性</strong>，主攻 grass 类。详细的下一步计划见第五篇《展望》。</p></blockquote>]]></content>
+    
+    
+    <summary type="html">本系列最重要的一篇：旧划分脚本无 seed 随机划分导致约 960 张 test 图混入训练，基线 0.751 为虚高；真实基线 0.576，训练图翻倍后 0.582→0.707（+12.5 点）；所有结构魔改在真实数据上全部失败。</summary>
+    
+    
+    
+    <category term="深度学习工程实践" scheme="https://2239168985-sudo.github.io/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/"/>
+    
+    
+    <category term="YOLOv8" scheme="https://2239168985-sudo.github.io/tags/YOLOv8/"/>
+    
+    <category term="目标检测" scheme="https://2239168985-sudo.github.io/tags/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/"/>
+    
+    <category term="数据泄漏" scheme="https://2239168985-sudo.github.io/tags/%E6%95%B0%E6%8D%AE%E6%B3%84%E6%BC%8F/"/>
+    
+    <category term="实验方法" scheme="https://2239168985-sudo.github.io/tags/%E5%AE%9E%E9%AA%8C%E6%96%B9%E6%B3%95/"/>
+    
+    <category term="数据驱动" scheme="https://2239168985-sudo.github.io/tags/%E6%95%B0%E6%8D%AE%E9%A9%B1%E5%8A%A8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>实验体系全记录：注意力 / 增强损失 / 结构改进 27 组对比</title>
+    <link href="https://2239168985-sudo.github.io/posts/3c46817b/"/>
+    <id>https://2239168985-sudo.github.io/posts/3c46817b/</id>
+    <published>2026-07-11T01:00:00.000Z</published>
+    <updated>2026-07-11T01:00:00.000Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>⚠️ <strong>重要口径声明</strong>：本文记录的是实验过程的原始台账，表中 mAP50 数字均为<strong>旧泄漏口径</strong>——后来证实当时使用的训练&#x2F;测试划分存在泄漏，这些数字<strong>已被证伪、为虚高值</strong>，不能作为「某方案优于基线」的证据。真实口径下的结论请看本系列第三篇《关键发现》。保留本文是为了完整还原实验体系与决策过程。</p></blockquote><h2 id="2-1-注意力机制对比（B1–B11）"><a href="#2-1-注意力机制对比（B1–B11）" class="headerlink" title="2.1 注意力机制对比（B1–B11）"></a>2.1 注意力机制对比（B1–B11）</h2><p>第一阶段对比了 11 个注意力 &#x2F; 模块变体，包括 C2fPSA、BAM、SE、EMA、SPPFCSPC、C2fCBAM、C2fCA 等。代表性结果：</p><table><thead><tr><th>模型</th><th>改动</th><th>旧泄漏口径 mAP50（虚高，已被证伪）</th></tr></thead><tbody><tr><td>baseline</td><td>原始 YOLOv8s</td><td>0.751</td></tr><tr><td>B1</td><td>C2fPSA</td><td>0.429（明显掉点，结构不友好）</td></tr><tr><td>B2</td><td>BAM</td><td>0.736（接近基线）</td></tr></tbody></table><p><strong>阶段性结论</strong>：局部加注意力大多低于或贴近基线；整体替换主干（如 B1 这一类改法）更伤精度。</p><h2 id="2-2-数据增强与损失组合（B12–B20）"><a href="#2-2-数据增强与损失组合（B12–B20）" class="headerlink" title="2.2 数据增强与损失组合（B12–B20）"></a>2.2 数据增强与损失组合（B12–B20）</h2><p>第二阶段尝试旋转、mixup、copy_paste、类别加权、过采样等组合。旧泄漏口径下表现最好的几组：</p><table><thead><tr><th>方案</th><th>旧泄漏口径 mAP50（虚高，已被证伪）</th></tr></thead><tbody><tr><td>v4 旋转</td><td>0.772</td></tr><tr><td>v1 mixup</td><td>0.767</td></tr><tr><td>v2 cos</td><td>0.766</td></tr><tr><td>B19 过采样</td><td>0.761</td></tr><tr><td>B14 类别加权</td><td>0.759</td></tr></tbody></table><blockquote><p>⚠️ 这些「超越基线」的数字全部来自被污染的划分，<strong>不能直接当作方案有效的证据</strong>。后续用官方真实划分重验后，结论被彻底改写（见第三篇）。</p></blockquote><h2 id="2-3-网络结构改进（B21–B27）"><a href="#2-3-网络结构改进（B21–B27）" class="headerlink" title="2.3 网络结构改进（B21–B27）"></a>2.3 网络结构改进（B21–B27）</h2><p>进入第二周后，老师给出三点新指示：</p><ol><li>针对草 &#x2F; 水生植被识别设计专用结构；</li><li>backbone 不是不能换；</li><li>把 YOLO 中可行的结构嫁接到 Swin &#x2F; Mamba &#x2F; Transformer 上。</li></ol><p>按此方向完成 7 组结构改进实验：</p><table><thead><tr><th>模型</th><th>改动</th><th>旧泄漏口径 mAP50（虚高，已被证伪）</th></tr></thead><tbody><tr><td>B21 RFAConv</td><td>草专属注意力（Neck P4）</td><td>0.728</td></tr><tr><td>B22 BiFormer</td><td>小目标路由注意力（Neck P3）</td><td>0.711</td></tr><tr><td>B23 ShuffleAttn</td><td>草专属注意力（Backbone 末）</td><td>0.714</td></tr><tr><td>B24 全 Swin 主干</td><td>backbone 整换 Swin-T</td><td>0.678</td></tr><tr><td>B25 ODMamba 主干</td><td>Mamba 从零训练（SSM 向量化提速 5×）</td><td>0.715</td></tr><tr><td>B26 Swin 并行支路</td><td>YOLO 嫁接 Swin（特征融合）</td><td>0.729</td></tr><tr><td>B27 SegNeXt 大核</td><td>水草大核注意力</td><td>0.741</td></tr></tbody></table><h3 id="本阶段的工程亮点"><a href="#本阶段的工程亮点" class="headerlink" title="本阶段的工程亮点"></a>本阶段的工程亮点</h3><p>B25 的 ODMamba 主干最初用 Python <code>for</code> 循环逐 token 递推状态空间模型（SSM），GPU 利用率只有 41%，速度约 0.4 it&#x2F;s。改为 GPU 并行前缀扫描（Hillis-Steele inclusive scan）后达到约 2.0 it&#x2F;s，<strong>提速约 5 倍</strong>，100 个 epoch 的训练时间从约 17.6 小时降到约 3.3 小时，且数值与原实现等价（最大误差 1.9e-6）。这个优化的完整过程见本系列第四篇《工程实战》。</p><h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>三条路线、27 组实验在旧口径下看似「互有胜负」，但下一篇要讲的发现会让一切重新排序：<strong>评测口径不先搞对，所有对比都是空中楼阁</strong>。</p>]]></content>
+    
+    
+    <summary type="html">水面垃圾检测改进实验的完整台账：B1–B11 注意力机制对比、B12–B20 数据增强与损失组合、B21–B27 网络结构改进。注意本文数字均为旧泄漏口径（已被证伪、虚高），仅作实验过程的完整记录。</summary>
+    
+    
+    
+    <category term="深度学习工程实践" scheme="https://2239168985-sudo.github.io/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/"/>
+    
+    
+    <category term="YOLOv8" scheme="https://2239168985-sudo.github.io/tags/YOLOv8/"/>
+    
+    <category term="目标检测" scheme="https://2239168985-sudo.github.io/tags/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/"/>
+    
+    <category term="注意力机制" scheme="https://2239168985-sudo.github.io/tags/%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6/"/>
+    
+    <category term="数据增强" scheme="https://2239168985-sudo.github.io/tags/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"/>
+    
+    <category term="Swin" scheme="https://2239168985-sudo.github.io/tags/Swin/"/>
+    
+    <category term="Mamba" scheme="https://2239168985-sudo.github.io/tags/Mamba/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>开篇：用 YOLOv8s 改进水面垃圾检测——项目概览与目标</title>
+    <link href="https://2239168985-sudo.github.io/posts/5008a6f6/"/>
+    <id>https://2239168985-sudo.github.io/posts/5008a6f6/</id>
+    <published>2026-07-08T01:00:00.000Z</published>
+    <updated>2026-07-08T01:00:00.000Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>这是「基于 YOLOv8s 的水面垃圾检测改进实验」系列的第一篇，记录项目第 1–2 周（2026-07-07 至 2026-07-20）的阶段性工作。作者是湖北工业大学电气工程及其自动化专业的熊竟航。</p></blockquote><h2 id="项目缘起"><a href="#项目缘起" class="headerlink" title="项目缘起"></a>项目缘起</h2><p>水面漂浮垃圾检测是智慧水务与河道治理中的一个实际视觉任务。本项目的目标很直接：<strong>用 YOLOv8s 改进水面垃圾（漂浮物）检测精度</strong>，回应老师提出的质疑——「跑不过 YOLOv8 基线」。</p><p>为了回应这个质疑，我在两周内搭建了一套 27 组对比实验的体系，覆盖注意力机制、数据增强与损失组合、网络结构改进三条路线。但在实验推进过程中，一个意外的发现推翻了我们此前对「基线」的全部认知（详见本系列第三篇）。</p><h2 id="数据集与划分"><a href="#数据集与划分" class="headerlink" title="数据集与划分"></a>数据集与划分</h2><p>数据集为老师提供的 VOCdevkit 格式标注数据：</p><table><thead><tr><th>项</th><th>内容</th></tr></thead><tbody><tr><td>图像规模</td><td>2400 张图 &#x2F; 3510 个标注框</td></tr><tr><td>类别（7 类）</td><td>Plastic-bag、Plastic-garbage、Bottle、branch、leaf、Milk-box、grass</td></tr><tr><td>官方划分</td><td>train 600 &#x2F; val 600 &#x2F; test 1200（seed&#x3D;42）</td></tr></tbody></table><h2 id="实验环境"><a href="#实验环境" class="headerlink" title="实验环境"></a>实验环境</h2><table><thead><tr><th>项</th><th>内容</th></tr></thead><tbody><tr><td>框架</td><td>ultralytics 8.4.90（源码安装）</td></tr><tr><td>深度学习框架</td><td>PyTorch 2.6.0 + cu124</td></tr><tr><td>Python 环境</td><td>conda 环境（XIAOTUDUI），Python 3.13</td></tr><tr><td>硬件</td><td>RTX 4060 8GB</td></tr></tbody></table><h2 id="关键转折：基线本身就有问题"><a href="#关键转折：基线本身就有问题" class="headerlink" title="关键转折：基线本身就有问题"></a>关键转折：基线本身就有问题</h2><p>在动手「改进」之前，一个必须先回答的问题是：<strong>基线到底是多少？</strong></p><p>项目中曾长期沿用的基线数字是 mAP50 &#x3D; 0.751。但后续审计发现，这个数字来自一份<strong>被污染的划分</strong>——旧的随机划分脚本把约 960 张 test 集图片混进了训练集，模型相当于「提前看过考卷」。</p><blockquote><p>⚠️ <strong>口径说明</strong>：本文及全站所有文章，一律区分两种精度口径——</p><ul><li><strong>旧泄漏口径</strong>：划分泄漏下得到的数字（如 0.751），<strong>已被证伪、为虚高值</strong>，仅保留作对比说明，不得作为任何结论依据；</li><li><strong>真实口径</strong>：使用官方划分（train 600 &#x2F; val 600 &#x2F; test 1200, seed&#x3D;42）评测得到的数字。</li></ul><p>真实基线 &#x3D; <strong>0.576</strong>（600 张训练图）。关于泄漏的根因分析，见本系列第三篇《关键发现》。</p></blockquote><h2 id="系列导读"><a href="#系列导读" class="headerlink" title="系列导读"></a>系列导读</h2><table><thead><tr><th>篇</th><th>内容</th></tr></thead><tbody><tr><td>1（本篇）</td><td>项目概览与目标</td></tr><tr><td>2</td><td>实验体系全记录：注意力 &#x2F; 增强损失 &#x2F; 结构改进 27 组对比</td></tr><tr><td>3</td><td>关键发现：划分泄漏、真实基线、数据量才是唯一杠杆</td></tr><tr><td>4</td><td>工程实战：SSM 向量化 5×、标注审计、Git Bash 杀进程大坑</td></tr><tr><td>5</td><td>展望：从改模型到攻数据——下一步与可复现性</td></tr></tbody></table>]]></content>
+    
+    
+    <summary type="html">基于 YOLOv8s 的水面垃圾（漂浮物）检测改进实验开篇：项目目标、VOCdevkit 数据集、官方划分、实验环境，以及那个改变一切的关键转折——旧基线 0.751 被证实是划分泄漏导致的虚高。</summary>
+    
+    
+    
+    <category term="深度学习工程实践" scheme="https://2239168985-sudo.github.io/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/"/>
+    
+    
+    <category term="YOLOv8" scheme="https://2239168985-sudo.github.io/tags/YOLOv8/"/>
+    
+    <category term="目标检测" scheme="https://2239168985-sudo.github.io/tags/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/"/>
+    
+    <category term="水面垃圾检测" scheme="https://2239168985-sudo.github.io/tags/%E6%B0%B4%E9%9D%A2%E5%9E%83%E5%9C%BE%E6%A3%80%E6%B5%8B/"/>
+    
+    <category term="深度学习" scheme="https://2239168985-sudo.github.io/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+  </entry>
+  
+</feed>

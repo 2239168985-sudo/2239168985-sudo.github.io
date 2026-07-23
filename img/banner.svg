@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 720" preserveAspectRatio="xMidYMid slice" role="img" aria-label="banner">
+  <defs>
+    <!-- 暗夜深海渐变 -->
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#0A1426"/>
+      <stop offset="55%"  stop-color="#102542"/>
+      <stop offset="100%" stop-color="#1B3A5C"/>
+    </linearGradient>
+
+    <!-- 顶部微光（晨曦感） -->
+    <radialGradient id="glow" cx="78%" cy="18%" r="55%">
+      <stop offset="0%"   stop-color="#3D6FA8" stop-opacity="0.55"/>
+      <stop offset="55%"  stop-color="#2A4E80" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#0A1426" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- 底部水光 -->
+    <radialGradient id="deep" cx="22%" cy="95%" r="60%">
+      <stop offset="0%"   stop-color="#0E6B8C" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#0A1426" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- 数据网格 -->
+    <pattern id="grid" width="64" height="64" patternUnits="userSpaceOnUse">
+      <path d="M 64 0 L 0 0 0 64" fill="none" stroke="#3A5A85" stroke-opacity="0.10" stroke-width="1"/>
+    </pattern>
+
+    <!-- 水波（柔和） -->
+    <linearGradient id="wave" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"  stop-color="#4FC3F7" stop-opacity="0"/>
+      <stop offset="30%" stop-color="#4FC3F7" stop-opacity="0.55"/>
+      <stop offset="70%" stop-color="#82D9FF" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#82D9FF" stop-opacity="0"/>
+    </linearGradient>
+
+    <linearGradient id="wave2" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"  stop-color="#82D9FF" stop-opacity="0"/>
+      <stop offset="40%" stop-color="#82D9FF" stop-opacity="0.32"/>
+      <stop offset="80%" stop-color="#A6E5FF" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#A6E5FF" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- 玻璃光斑 -->
+    <radialGradient id="orb" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"  stop-color="#9FD8FF" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#9FD8FF" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- 噪点（高级感） -->
+    <filter id="noise" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/>
+      <feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.04 0"/>
+    </filter>
+  </defs>
+
+  <!-- 底色 -->
+  <rect width="1920" height="720" fill="url(#sky)"/>
+  <rect width="1920" height="720" fill="url(#glow)"/>
+  <rect width="1920" height="720" fill="url(#deep)"/>
+
+  <!-- 数据网格 -->
+  <rect width="1920" height="720" fill="url(#grid)"/>
+
+  <!-- 玻璃光斑（增加层次） -->
+  <circle cx="260"  cy="180" r="180" fill="url(#orb)"/>
+  <circle cx="1620" cy="540" r="240" fill="url(#orb)" opacity="0.7"/>
+  <circle cx="1180" cy="120" r="140" fill="url(#orb)" opacity="0.5"/>
+
+  <!-- 远处数据点（科技感） -->
+  <g fill="#7FB8E8" opacity="0.55">
+    <circle cx="180"  cy="120" r="2.2"/>
+    <circle cx="320"  cy="220" r="1.8"/>
+    <circle cx="460"  cy="160" r="2.4"/>
+    <circle cx="640"  cy="280" r="1.6"/>
+    <circle cx="860"  cy="140" r="2.0"/>
+    <circle cx="1080" cy="240" r="2.2"/>
+    <circle cx="1280" cy="100" r="1.8"/>
+    <circle cx="1480" cy="200" r="2.4"/>
+    <circle cx="1680" cy="160" r="2.0"/>
+    <circle cx="1820" cy="260" r="1.6"/>
+  </g>
+
+  <!-- 数据连线（细、虚） -->
+  <g stroke="#7FB8E8" stroke-opacity="0.18" stroke-width="1" fill="none">
+    <path d="M180 120 L320 220 L460 160 L640 280 L860 140 L1080 240 L1280 100 L1480 200 L1680 160 L1820 260"/>
+  </g>
+
+  <!-- 水波（呼应"水面"主题） -->
+  <path d="M0 520 C 240 460, 480 580, 720 510 S 1200 460, 1440 530 S 1800 480, 1920 520 L 1920 720 L 0 720 Z"
+        fill="#0E6B8C" fill-opacity="0.10"/>
+  <path d="M0 590 C 240 540, 480 640, 720 580 S 1200 540, 1440 600 S 1800 560, 1920 590 L 1920 720 L 0 720 Z"
+        fill="#0E6B8C" fill-opacity="0.18"/>
+
+  <!-- 高亮波线 -->
+  <path d="M0 520 C 240 460, 480 580, 720 510 S 1200 460, 1440 530 S 1800 480, 1920 520"
+        fill="none" stroke="url(#wave)" stroke-width="2"/>
+  <path d="M0 590 C 240 540, 480 640, 720 580 S 1200 540, 1440 600 S 1800 560, 1920 590"
+        fill="none" stroke="url(#wave2)" stroke-width="1.5"/>
+
+  <!-- 噪点纹理 -->
+  <rect width="1920" height="720" filter="url(#noise)" opacity="0.6"/>
+</svg>
